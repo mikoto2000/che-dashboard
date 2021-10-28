@@ -49,7 +49,6 @@ bump_version () {
   if [[ ${NOCOMMIT} -eq 0 ]]; then
     COMMIT_MSG="chore: Bump to ${NEXT_VERSION} in ${BUMP_BRANCH}"
     git commit -asm "${COMMIT_MSG}"
-    git pull origin "${BUMP_BRANCH}"
 
     PUSH_TRY="$(git push origin "${BUMP_BRANCH}" || true)"
     if [[ $PUSH_TRY == *"protected branch hook declined"* ]]; then
@@ -107,7 +106,7 @@ git checkout "${BASEBRANCH}"
 
 # create new branch off ${BASEBRANCH} (or check out latest commits if branch already exists), then push to origin
 if [[ "${BASEBRANCH}" != "${BRANCH}" ]]; then
-  git branch "${BRANCH}" || git checkout "${BRANCH}" && git pull origin "${BRANCH}"
+  git branch "${BRANCH}" || git checkout "${BRANCH}"
   git push origin "${BRANCH}"
   git fetch origin "${BRANCH}:${BRANCH}"
   git checkout "${BRANCH}"
@@ -121,7 +120,6 @@ update_pkgs_versions $VERSION
 if [[ ${NOCOMMIT} -eq 0 ]]; then
   COMMIT_MSG="chore: Bump to ${VERSION} in ${BRANCH}"
   git commit -asm "${COMMIT_MSG}"
-  git pull origin "${BRANCH}"
   git push origin "${BRANCH}"
 fi
 
