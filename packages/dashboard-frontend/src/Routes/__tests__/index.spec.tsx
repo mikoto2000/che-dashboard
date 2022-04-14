@@ -21,7 +21,6 @@ import Fallback from '../../components/Fallback';
 import { ROUTE } from '../../route.enum';
 import {
   buildDetailsLocation,
-  buildFactoryLoaderLocation,
   buildGettingStartedLocation,
   buildIdeLoaderLocation,
   buildWorkspacesLocation,
@@ -212,92 +211,6 @@ describe('Routes', () => {
       await waitFor(() => expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument());
 
       expect(screen.queryByText('Ide Loader')).toBeTruthy();
-    });
-  });
-
-  describe('Factory Loader route', () => {
-    it('should handle "/factory-loader?url=http://example.com"', async () => {
-      const factoryUrl = 'http://example.com/factory';
-      const location = buildFactoryLoaderLocation(factoryUrl);
-      render(getComponent(location));
-
-      await waitFor(() => expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument());
-
-      expect(screen.queryByText('Factory Loader')).toBeTruthy();
-    });
-
-    describe('redirection', () => {
-      it('should handle an unsecured factory link without params', async () => {
-        const factoryUrl = 'http://example.com/factory';
-        render(getComponent('/' + factoryUrl));
-
-        await waitFor(() =>
-          expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument(),
-        );
-
-        expect(screen.queryByText('Factory Loader')).toBeTruthy();
-
-        const locationSearchPart = `?url=${encodeURIComponent(factoryUrl)}`;
-        expect(location.search).toEqual(locationSearchPart);
-      });
-
-      it('should handle a secured factory link without params', async () => {
-        const factoryUrl = 'https://example.com/factory';
-        render(getComponent('/' + factoryUrl));
-
-        await waitFor(() =>
-          expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument(),
-        );
-
-        expect(screen.queryByText('Factory Loader')).toBeTruthy();
-
-        const locationSearchPart = `?url=${encodeURIComponent(factoryUrl)}`;
-        expect(location.search).toEqual(locationSearchPart);
-      });
-
-      it('should handle a factory link with params', async () => {
-        const factoryUrl = 'http://example.com/factory?createPolicy=perUser';
-        render(getComponent('/' + factoryUrl));
-
-        await waitFor(() =>
-          expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument(),
-        );
-
-        expect(screen.queryByText('Factory Loader')).toBeTruthy();
-
-        const locationSearchPart = `?url=${encodeURIComponent(factoryUrl)}`;
-        expect(location.search).toEqual(locationSearchPart);
-      });
-
-      it('should handle a factory link with oauth params left as search params', async () => {
-        const factoryUrl = 'http://example.com/factory?createPolicy=perUser';
-        const oauthParams = '&state=param1&session_state=param2&code=param3';
-        render(getComponent('/' + factoryUrl + oauthParams));
-
-        await waitFor(() =>
-          expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument(),
-        );
-
-        expect(screen.queryByText('Factory Loader')).toBeTruthy();
-
-        const locationSearchPart = `?url=${encodeURIComponent(factoryUrl)}`;
-        expect(location.search).toEqual(locationSearchPart);
-      });
-
-      it('should handle a factory link with oauth params left as part of pathname', async () => {
-        const factoryUrl = 'http://example.com/factory';
-        const oauthParams = '&state=param1&session_state=param2&code=param3';
-        render(getComponent('/' + factoryUrl + oauthParams));
-
-        await waitFor(() =>
-          expect(screen.queryByTestId('fallback-spinner')).not.toBeInTheDocument(),
-        );
-
-        expect(screen.queryByText('Factory Loader')).toBeTruthy();
-
-        const locationSearchPart = `?url=${encodeURIComponent(factoryUrl)}`;
-        expect(location.search).toEqual(locationSearchPart);
-      });
     });
   });
 

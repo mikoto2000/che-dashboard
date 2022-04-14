@@ -32,8 +32,16 @@ export function registerStaticServer(publicFolder: string, server: FastifyInstan
         return reply.redirect(authorizationEndpoint);
       }
     }
-    return reply.redirect('/dashboard/static/preload.html');
+    return reply.redirect('/dashboard/static/preload/');
   });
+
+  async function factoryCallback(request: FastifyRequest, reply: FastifyReply) {
+    return reply.redirect('/dashboard/#/load-factory');
+  }
+  server.get('/f', factoryCallback);
+  server.get('/factory', factoryCallback);
+  server.get('/dashboard/f', factoryCallback);
+  server.get('/dashboard/factory', factoryCallback);
 
   const doNotCache = [
     '/dashboard/',
