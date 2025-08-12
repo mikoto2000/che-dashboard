@@ -49,6 +49,8 @@ export class EditorDefinitionField extends React.PureComponent<Props, State> {
           placeholder="Enter the link to a container editor definition URL or an editor id"
           onChange={value => this.handleChange(value)}
           value={definition}
+          name="che-editor-definition"
+          autoComplete="on"
         />
       </FormGroup>
     );
